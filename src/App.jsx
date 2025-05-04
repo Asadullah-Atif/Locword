@@ -14,7 +14,7 @@ function App() {
     console.log("Will set range to:", totalPasswordLength);
   }
 
-
+Happy from backend
   function handleGenerateButton() {
     let uppercaseValue = uppercase.current.checked;
     let lowercaseValue = lowercase.current.checked;
