@@ -63,7 +63,6 @@ export function CharacterAddSuggestions({
           objOfLength.lowercase--;
           console.log(objOfLength.lowercase);
           break;
-          hi
         case "number":
           objOfLength.number--;
           console.log(objOfLength.number);

@@ -3,50 +3,87 @@ import "./App.css";
 import { CharacterAddSuggestions } from "./Components/ChractersAddSugestion";
 
 function App() {
-  let uppercase = useRef(0);
-  let lowercase = useRef(0);
-  let number = useRef(0);
-  let symbols = useRef(0);
-
-  const [range, setRange] = useState(12);
+     let uppercase = useRef(0);
+     let lowercase = useRef(0);
+     let number = useRef(0);
+     let symbols = useRef(0);
+     let [password, setPassword] = useState("");
+     let [range,setRange] = useState({
+       uppercase: 4,
+       lowercase: 4,
+       number: 2,
+       symbols: 2,
+     });
   function handleRangeValue(totalPasswordLength) {
-    setRange(totalPasswordLength);
+    range = totalPasswordLength;
+    setRange(range)
     console.log("Will set range to:", totalPasswordLength);
   }
+  function shuffleString(str) {
+    const arr = str.split("");
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr.join("");
+  }
 
-Happy from backend
   function handleGenerateButton() {
+     console.log(`The latest value of range is ${range}.`,range);
+     // handleRangeValue();
+
+    password = "";
+    setPassword(password);
     let uppercaseValue = uppercase.current.checked;
     let lowercaseValue = lowercase.current.checked;
     let numberValue = number.current.checked;
     let symbolsValue = symbols.current.checked;
 
     if (uppercaseValue || lowercaseValue || numberValue || symbolsValue) {
-      console.log("Checked!");
-      let password = "";
       let str = "";
-      if (uppercaseValue) str += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      console.log(str);
-
-      for(let i = 0; i<str.length;i++){
-          password += Math.floor(Math.random()*16);
-          console.log(password);
+      if (uppercaseValue) {
+        str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (let i = 0; i < range.uppercase; i++) {
+          password += str.charAt(Math.floor(Math.random() * str.length));
+        }
+      }
+      if (lowercaseValue) {
+        str = "abcdefghijklmnopqrstuvwxyz";
+        for (let i = 0; i < range.lowercase; i++) {
+          password += str.charAt(Math.floor(Math.random() * str.length));
+        }
 
       }
-      if (lowercaseValue) str += "abcdefghijklmnopqrstuvwxyz";
-      if (numberValue) str += "0123456789";
-      if (symbolsValue) str += "!@#$%^&*()-_=+[]{}|;:',.<>?/`~/";
+      if (numberValue) {
+        str = "0123456789";
+        for (let i = 0; i < range.number; i++) {
+          password += str.charAt(Math.floor(Math.random() * str.length));
+        }
+
+      }
+      if (symbolsValue) {
+        str = "!@#$%^&*()-_=+[]{}|;:',.<>?/`~/";
+        for (let i = 0; i < range.symbols; i++) {
+          password += str.charAt(Math.floor(Math.random() * str.length));
+        }
+      }
+      setPassword(shuffleString(password));
+      console.log(password);
     } else {
       alert("Check at least one.");
     }
   }
+
+     console.log(`The latest value of range is ${range}.`, range);
 
   return (
     <>
       <div className="main">
         <b>Generate password 🔒</b>
         <div className="passwordShower">
-          <div className="passwordContainer"></div>
+          <div className="passwordContainer">
+            {password || "Your password will appear here"}
+          </div>
           <button className="copyButton">Copy</button>
         </div>
         <div className="characterContainer">
@@ -56,7 +93,7 @@ Happy from backend
             checkedValue={true}
             inputRef={uppercase}
             min={4}
-            max={8}
+            max={10}
             changeValue={handleRangeValue}
           />
           <CharacterAddSuggestions
@@ -65,7 +102,7 @@ Happy from backend
             checkedValue={true}
             inputRef={lowercase}
             min={4}
-            max={8}
+            max={10}
             changeValue={handleRangeValue}
           />
           <CharacterAddSuggestions
