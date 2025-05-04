@@ -3,21 +3,27 @@ import "./App.css";
 import { CharacterAddSuggestions } from "./Components/ChractersAddSugestion";
 
 function App() {
-     let uppercase = useRef(0);
-     let lowercase = useRef(0);
-     let number = useRef(0);
-     let symbols = useRef(0);
-     let [password, setPassword] = useState("");
-     let [range,setRange] = useState({
-       uppercase: 4,
-       lowercase: 4,
-       number: 2,
-       symbols: 2,
-     });
+  let uppercase = useRef(null);
+  let lowercase = useRef(null);
+  let number = useRef(null);
+  let symbols = useRef(null);
+  let passwordCopy = useRef(null);
+  let [password, setPassword] = useState("");
+  let [range, setRange] = useState({
+    uppercase: 4,
+    lowercase: 4,
+    number: 2,
+    symbols: 2,
+  });
+
   function handleRangeValue(totalPasswordLength) {
-    range = totalPasswordLength;
-    setRange(range)
-    console.log("Will set range to:", totalPasswordLength);
+    setRange(totalPasswordLength);
+  }
+  function randomString(string, count) {
+    for (let i = 0; i < count; i++) {
+      password += string.charAt(Math.floor(Math.random() * string.length));
+    }
+    return setPassword(password);
   }
   function shuffleString(str) {
     const arr = str.split("");
@@ -27,64 +33,40 @@ function App() {
     }
     return arr.join("");
   }
-
+  function handleCopyButton() {
+    navigator.clipboard.writeText(password);
+  }
   function handleGenerateButton() {
-     console.log(`The latest value of range is ${range}.`,range);
-     // handleRangeValue();
-
-    password = "";
-    setPassword(password);
+    setPassword("");
     let uppercaseValue = uppercase.current.checked;
     let lowercaseValue = lowercase.current.checked;
     let numberValue = number.current.checked;
     let symbolsValue = symbols.current.checked;
 
     if (uppercaseValue || lowercaseValue || numberValue || symbolsValue) {
-      let str = "";
-      if (uppercaseValue) {
-        str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        for (let i = 0; i < range.uppercase; i++) {
-          password += str.charAt(Math.floor(Math.random() * str.length));
-        }
-      }
-      if (lowercaseValue) {
-        str = "abcdefghijklmnopqrstuvwxyz";
-        for (let i = 0; i < range.lowercase; i++) {
-          password += str.charAt(Math.floor(Math.random() * str.length));
-        }
-
-      }
-      if (numberValue) {
-        str = "0123456789";
-        for (let i = 0; i < range.number; i++) {
-          password += str.charAt(Math.floor(Math.random() * str.length));
-        }
-
-      }
-      if (symbolsValue) {
-        str = "!@#$%^&*()-_=+[]{}|;:',.<>?/`~/";
-        for (let i = 0; i < range.symbols; i++) {
-          password += str.charAt(Math.floor(Math.random() * str.length));
-        }
-      }
+      if (uppercaseValue)
+        randomString("ABCDEFGHIJKLMNOPQRSTUVWXYZ", range.uppercase);
+      if (lowercaseValue)
+        randomString("abcdefghijklmnopqrstuvwxyz", range.lowercase);
+      if (numberValue) randomString("0123456789", range.number);
+      if (symbolsValue)
+        randomString("!@#$%^&*()-_=+[]{}|;:',.<>?/`~/", range.symbols);
       setPassword(shuffleString(password));
-      console.log(password);
     } else {
       alert("Check at least one.");
     }
   }
-
-     console.log(`The latest value of range is ${range}.`, range);
-
   return (
     <>
       <div className="main">
         <b>Generate password 🔒</b>
         <div className="passwordShower">
-          <div className="passwordContainer">
+          <div ref={passwordCopy} className="passwordContainer">
             {password || "Your password will appear here"}
           </div>
-          <button className="copyButton">Copy</button>
+          <button className="copyButton" onClick={handleCopyButton}>
+            Copy
+          </button>
         </div>
         <div className="characterContainer">
           <CharacterAddSuggestions
@@ -95,6 +77,7 @@ function App() {
             min={4}
             max={10}
             changeValue={handleRangeValue}
+            autoFocus={true}
           />
           <CharacterAddSuggestions
             suggestionType="lowercase"
