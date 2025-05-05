@@ -37,7 +37,8 @@ function App() {
     navigator.clipboard.writeText(password);
   }
   function handleGenerateButton() {
-    setPassword("");
+     password = "";
+    setPassword(password);
     let uppercaseValue = uppercase.current.checked;
     let lowercaseValue = lowercase.current.checked;
     let numberValue = number.current.checked;
@@ -58,52 +59,49 @@ function App() {
   }
   return (
     <>
+      <img src="/Logo (1).png" alt="Logo of the company." width={100} />
       <div className="main">
         <b>Generate password 🔒</b>
         <div className="passwordShower">
           <div ref={passwordCopy} className="passwordContainer">
-            {password || "Your password will appear here"}
+            {password || "Password will appear here"}
           </div>
-          <button className="copyButton" onClick={handleCopyButton}>
+          <button className="copyButton" onClick={handleCopyButton} disabled={!password}>
             Copy
           </button>
         </div>
         <div className="characterContainer">
           <CharacterAddSuggestions
             suggestionType="uppercase"
-            fromTo="(A-Z)"
             checkedValue={true}
             inputRef={uppercase}
             min={4}
-            max={10}
+            max={8}
             changeValue={handleRangeValue}
             autoFocus={true}
           />
           <CharacterAddSuggestions
             suggestionType="lowercase"
-            fromTo="(a-z)"
             checkedValue={true}
             inputRef={lowercase}
             min={4}
-            max={10}
+            max={8}
             changeValue={handleRangeValue}
           />
           <CharacterAddSuggestions
             suggestionType="number"
-            fromTo="(0-9)"
             checkedValue={true}
             inputRef={number}
             min={2}
-            max={6}
+            max={5}
             changeValue={handleRangeValue}
           />
           <CharacterAddSuggestions
             suggestionType="symbols"
-            fromTo="(!@#$%^&*)"
             checkedValue={false}
             inputRef={symbols}
             min={2}
-            max={6}
+            max={5}
             changeValue={handleRangeValue}
           />
         </div>
@@ -114,6 +112,7 @@ function App() {
           Generate
         </button>
       </div>
+      <h6>Made By Asadullah. ©</h6>
     </>
   );
 }

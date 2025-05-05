@@ -14,6 +14,7 @@ export function CharacterAddSuggestions({
   min,
   max,
   changeValue,
+  autoFocus = false,
 }) {
   let [checkboxValue, setCheckboxValue] = useState(checkedValue);
   let [value, setValue] = useState(min);
@@ -30,24 +31,19 @@ export function CharacterAddSuggestions({
       setValue(value + 1);
 
       let current = e.target.id;
-      console.log(current);
 
       switch (current) {
         case "uppercase":
-          objOfLength.uppercase = objOfLength.uppercase + 1;
-          console.log(objOfLength.uppercase);
+          objOfLength.uppercase++;
           break;
         case "lowercase":
           objOfLength.lowercase++;
-          console.log(objOfLength.lowercase);
           break;
         case "number":
           objOfLength.number++;
-          console.log(objOfLength.number);
           break;
         case "symbols":
           objOfLength.symbols++;
-          console.log(objOfLength.symbols);
           break;
       }
     }
@@ -57,19 +53,15 @@ export function CharacterAddSuggestions({
       switch (current) {
         case "uppercase":
           objOfLength.uppercase--;
-          console.log(objOfLength.uppercase);
           break;
         case "lowercase":
           objOfLength.lowercase--;
-          console.log(objOfLength.lowercase);
           break;
         case "number":
           objOfLength.number--;
-          console.log(objOfLength.number);
           break;
         case "symbols":
           objOfLength.symbols--;
-          console.log(objOfLength.symbols);
           break;
       }
     }
@@ -77,20 +69,19 @@ export function CharacterAddSuggestions({
   }
   return (
     <div className={`grid-three ${suggestionType}`}>
-      <input
-        type="checkbox"
-        name={suggestionType}
-        checked={checkboxValue}
-        onClick={handleCheckbox}
-        ref={inputRef}
-      />
+      <div className="inputDiv">
+        <input
+          type="checkbox"
+          name={suggestionType}
+          checked={checkboxValue}
+          onClick={handleCheckbox}
+          ref={inputRef}
+        />
+      </div>
       <label htmlFor={suggestionType} className="labelForChar">
         Include {suggestionType} {fromTo}
       </label>
       <div className="lengthContainer" style={{ margin: "auto" }}>
-        <label htmlFor={suggestionType} className="labelForChar">
-          Length:{" "}
-        </label>
         <input
           id={suggestionType}
           type="number"
@@ -98,7 +89,7 @@ export function CharacterAddSuggestions({
           max={max}
           value={value}
           onKeyDown={(e) => handleValue(e)}
-          autoFocus
+          autoFocus={autoFocus}
         />
       </div>
     </div>
