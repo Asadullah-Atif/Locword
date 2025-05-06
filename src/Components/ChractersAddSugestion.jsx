@@ -1,11 +1,4 @@
 import { useState } from "react";
-
-let objOfLength = {
-  uppercase: 4,
-  lowercase: 4,
-  number: 2,
-  symbols: 2,
-};
 export function CharacterAddSuggestions({
   suggestionType,
   fromTo,
@@ -13,8 +6,9 @@ export function CharacterAddSuggestions({
   inputRef,
   min,
   max,
-  changeValue,
   autoFocus = false,
+  range,
+  setRange,
 }) {
   let [checkboxValue, setCheckboxValue] = useState(checkedValue);
   let [value, setValue] = useState(min);
@@ -28,44 +22,55 @@ export function CharacterAddSuggestions({
   }
   function handleValue(e) {
     if (e.key === "ArrowUp" && value < max) {
+      console.log("Hi");
+
       setValue(value + 1);
 
       let current = e.target.id;
 
       switch (current) {
         case "uppercase":
-          objOfLength.uppercase++;
+          range.uppercase += 1;
+          setRange(range);
           break;
         case "lowercase":
-          objOfLength.lowercase++;
+          range.lowercase += 1;
+          setRange(range);
           break;
         case "number":
-          objOfLength.number++;
+          range.number += 1;
+          setRange(range);
           break;
         case "symbols":
-          objOfLength.symbols++;
+          range.symbols += 1;
+          setRange(range);
           break;
       }
     }
     if (e.key === "ArrowDown" && value > min) {
+      console.log("Hi");
+
       setValue(value - 1);
       let current = e.target.id;
       switch (current) {
         case "uppercase":
-          objOfLength.uppercase--;
+          range.uppercase += 1;
+          setRange(range);
           break;
         case "lowercase":
-          objOfLength.lowercase--;
+          range.lowercase += 1;
+          setRange(range);
           break;
         case "number":
-          objOfLength.number--;
+          range.number += 1;
+          setRange(range);
           break;
         case "symbols":
-          objOfLength.symbols--;
+          range.symbols += 1;
+          setRange(range);
           break;
       }
     }
-    changeValue(objOfLength);
   }
   return (
     <div className={`grid-three ${suggestionType}`}>
@@ -90,6 +95,7 @@ export function CharacterAddSuggestions({
           value={value}
           onKeyDown={(e) => handleValue(e)}
           autoFocus={autoFocus}
+          onChange={(e) => setValue(e.target.value)}
         />
       </div>
     </div>

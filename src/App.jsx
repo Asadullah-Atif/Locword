@@ -15,10 +15,6 @@ function App() {
     number: 2,
     symbols: 2,
   });
-
-  function handleRangeValue(totalPasswordLength) {
-    setRange(totalPasswordLength);
-  }
   function randomString(string, count) {
     for (let i = 0; i < count; i++) {
       password += string.charAt(Math.floor(Math.random() * string.length));
@@ -59,14 +55,17 @@ function App() {
   }
   return (
     <>
-      <img src="/Logo (1).png" alt="Logo of the company." width={100} />
       <div className="main">
         <b>Generate password 🔒</b>
         <div className="passwordShower">
           <div ref={passwordCopy} className="passwordContainer">
             {password || "Password will appear here"}
           </div>
-          <button className="copyButton" onClick={handleCopyButton} disabled={!password}>
+          <button
+            className="copyButton"
+            onClick={handleCopyButton}
+            disabled={!password}
+          >
             Copy
           </button>
         </div>
@@ -77,8 +76,9 @@ function App() {
             inputRef={uppercase}
             min={4}
             max={8}
-            changeValue={handleRangeValue}
             autoFocus={true}
+            range={range}
+            setRange={setRange}
           />
           <CharacterAddSuggestions
             suggestionType="lowercase"
@@ -86,7 +86,9 @@ function App() {
             inputRef={lowercase}
             min={4}
             max={8}
-            changeValue={handleRangeValue}
+            autoFocus={false}
+            range={range}
+            setRange={setRange}
           />
           <CharacterAddSuggestions
             suggestionType="number"
@@ -94,7 +96,9 @@ function App() {
             inputRef={number}
             min={2}
             max={5}
-            changeValue={handleRangeValue}
+            autoFocus={false}
+            range={range}
+            setRange={setRange}
           />
           <CharacterAddSuggestions
             suggestionType="symbols"
@@ -102,7 +106,9 @@ function App() {
             inputRef={symbols}
             min={2}
             max={5}
-            changeValue={handleRangeValue}
+            autoFocus={false}
+            range={range}
+            setRange={setRange}
           />
         </div>
         <button
